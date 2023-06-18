@@ -19,10 +19,13 @@ def operation_sort(collection):
     "Сортировка по дате"
     sorted_operations = sorted(collection, key=lambda x: datetime.strptime(x['date'][:-7], '%Y-%m-%dT%H:%M:%S'), reverse=True)
     counter = 0
+    print_list = []
     "Парсинг вывода"
     for operation in sorted_operations:
 
         if all([counter <= 5, operation['state'] == 'EXECUTED']):
+            print_list.append(operation)
+
             print(f'{".".join(operation["date"][:10].split("-")[::-1])} {operation["description"]}')
             sendler = operation.get('from', '')
             reciver = operation["to"].split()
@@ -48,6 +51,6 @@ def operation_sort(collection):
             break
 
     "Добавил ретёрн для тестов"
-    return sorted_operations[:5]
+    return print_list
 
-operation_sort(operations_wo_empty_dict)
+print(operation_sort(operations_wo_empty_dict))
